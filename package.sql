@@ -1,0 +1,90 @@
+PACKAGE Projet IS
+
+FUNCTION NBEQUIPEPROJET(IdProj INTEGER) RETURN NUMBER;
+PROCEDURE MAJINTERVENANTS(IdProj NUMBER, Nbre NUMBER);
+PROCEDURE AJOUTPROSPECTION(IdProj_ NUMBER, IdProspect INTEGER);
+PROCEDURE PRESENCEREUNION(IdReu_ INTEGER);
+PROCEDURE PRESENCEPROJETREUNION(IdProj INT);
+PROCEDURE PROJETINFO;
+
+END;
+
+PACKAGE BODY Projet IS
+
+
+CREATE OR REPLACE FUNCTION NBEQUIPEPROJET(IdProj INTEGER) RETURN NUMBER IS
+nbProspect INTEGER;
+BEGIN
+
+SELECT COUNT(I.IdProspect) INTO nbProspect FROM INVESTISSEMENT AS I WHERE I.IdProj = IdProj;
+
+RETURN nbProspect;
+
+END NBEQUIPEPROJET;
+
+
+CREATE OR REPLACE PROCEDURE MAJINTERVENANTS(IdProj_ NUMBER, Nbre NUMBER) IS
+TSQL VARCHAR2(50);
+nbInter INTEGER
+
+BEGIN
+
+SELECT NbIntervenant INTO nbInter FROM Projet AS P WHERE P.IdProj = IdProj; 
+
+IF(Nbre > 0) THEN
+    TSQL:= 'UPDATE ' || Projet || ' set ' || NbIntervenant || '=' NbIntervenant+Nbre || ' WHERE ' || IdProj || '=' IdProj_;
+ELSIF(Nbre < 0 AND NBEQUIPEPROJET(IdProj) < nb) THEN
+    TSQL:= 'UPDATE ' || Projet || ' set ' || NbIntervenant || '=' NbIntervenant-Nbre || ' WHERE ' || IdProj || '=' IdProj_;
+END IF;
+
+EXECUTE IMMEDIATE TSQL;
+
+END MAJINTERVENANTS;
+
+
+CREATE OR REPLACE AJOUTPROSPECTION(IdProj NUMBER, IdProspect INTEGER) IS
+
+TSQL VARCHAR2(50);
+nbInter INTEGER;
+
+BEGIN
+
+SELECT NbIntervenant INTO nbInter FROM Projet AS P WHERE P.IdProj = IdProj; 
+
+IF(NBEQUIPEPROJET(IdProj) < nbInter) THEN
+    TSQL:= 'INSERT INTO ' || Investissement ||'(DateAdhesion, IdProj, IdPro) VALUES('||SYSDATE, IdProj, IdProspect||')';
+    EXECUTE IMMEDIATE TSQL;
+ELSE
+    DBMS_OUTPUT.PUT_LINE('Ajout de prospection echoué');
+END IF;
+
+END AJOUTPROSPECTION;
+
+
+CREATE OR REPLACE PROCEDURE PRESENCEREUNION(IdReu_ INTEGER) IS
+
+CURSOR C_PRES IS SELECT IdPro
+ FROM Invitation AS I INNER JOIN Prospecteur AS P ON I.IdProj = P.IdProj
+    WHERE IdReu = IdReu_ AND Participation = 1 ORDER BY P.Nom_Pro, P.Prenom_Pro;
+
+BEGIN
+
+FOR tuple IN C_PRES LOOP
+    DBMS_OUTPUT.PUT_LINE(tuple.Nom_Pro ||' ' || tuple.Prenom_Pro);
+END LOOP;
+
+END PRESENCEREUNION;
+
+END Projet;
+
+
+
+
+
+
+
+
+
+
+
+
