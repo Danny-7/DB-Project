@@ -80,7 +80,7 @@ ALTER TABLE Invitation ADD CONSTRAINT FK_QA_Invitation_Id_Pro FOREIGN KEY(Id_Pro
 ALTER TABLE Invitation ADD CONSTRAINT FK_QA_Invitation_Id_Reunion FOREIGN KEY(Id_Reunion) REFERENCES Reunion(Id_Reunion);
 
 
-ALTER TABLE Projet ADD CONSTRAINT Projet_NbrIntervenant_CK CHECK(NbIntervenant > 0);
+ALTER TABLE Projet ADD CONSTRAINT Projet_NbrIntervenant_CK CHECK(NbIntervenant >= 0);
 ALTER TABLE Projet ADD CONSTRAINT Projet_CoutPlace_CK CHECK(CoutPlace >= 0);
 ALTER TABLE Invitation ADD CONSTRAINT Participation_CoutPlace_CK CHECK(Participation = 0 OR Participation = 1);
 
@@ -128,6 +128,6 @@ INSERT INTO Investissement(DateAdhesion, Id_Projet, Id_Pro) VALUES (TO_DATE('06/
 INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(1, 1, 1);
 INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(0, 4, 2);
 INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(1, 3, 2);
-INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(0, 2, 3);
+INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(1, 2, 3);
 INSERT INTO Invitation (Participation, Id_Pro, Id_Reunion) VALUES(1, 1, 3);
 
