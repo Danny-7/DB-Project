@@ -42,8 +42,6 @@ ELSE
     DBMS_OUTPUT.PUT_LINE('Le nombre de prospecteur est supérieur au nombre d''intervenants initial');
 END IF;
 
-
-
 END MAJINTERVENANTS;
 
 
@@ -57,8 +55,7 @@ BEGIN
 SELECT NbIntervenant INTO nbInter FROM Projet WHERE Id_Projet = P_IdProj; 
 
 IF(NBEQUIPEPROJET(P_IdProj) < nbInter) THEN
-    EXECUTE IMMEDIATE 'INSERT INTO  Investissement (DateAdhesion, Id_Projet, Id_Pro) VALUES(:1, :2, :3)' USING SYSDATE, P_IdProj, P_IdProspect;
-   
+    EXECUTE IMMEDIATE 'INSERT INTO  Investissement (DateAdhesion, Id_Projet, Id_Pro) VALUES(:1, :2, :3)' USING SYSDATE, P_IdProj, P_IdProspect; 
 END IF;
 
 END AJOUTPROSPECTION;
