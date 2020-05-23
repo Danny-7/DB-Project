@@ -21,45 +21,46 @@ DROP TABLE Invitation CASCADE CONSTRAINT PURGE;
 REM Création des tables
 CREATE TABLE Commune(
     Id_Commune INTEGER,
-    Nom_Commune VARCHAR(30) NOT NULL,
-    CP_Commune CHAR(5) NOT NULL, 
+    Nom_Commune VARCHAR(30) CONSTRAINT NN_NCommune NOT NULL,
+    CP_Commune CHAR(5) CONSTRAINT NN_CPCommune NOT NULL, 
     CONSTRAINT UC_Commune UNIQUE(Nom_Commune, CP_Commune)
 );
 
 CREATE TABLE Prospecteur(
-    Id_Pro INTEGER NOT NULL,
-    Nom_Pro VARCHAR(20) NOT NULL,
-    Prenom_Pro VARCHAR(15) NOT NULL,
-    Adresse_Pro VARCHAR(30) NOT NULL,
+    Id_Pro INTEGER CONSTRAINT NN_IdPro NOT NULL,
+    Nom_Pro VARCHAR(20) CONSTRAINT NN_NomPro NOT NULL,
+    Prenom_Pro VARCHAR(15) CONSTRAINT NN_PrePro NOT NULL,
+    Adresse_Pro VARCHAR(30) CONSTRAINT NN_AdrPro NOT NULL,
     Tel_Pro CHAR(10),
     Mail_Pro VARCHAR(30),
-    Id_Commune INTEGER NOT NULL,
+    Id_Commune INTEGER CONSTRAINT NN_IdCommune NOT NULL,
     CONSTRAINT UC_Prospecteur UNIQUE(Nom_Pro, Prenom_Pro)
 );
 
 CREATE TABLE Reunion(
-    Id_Reunion INTEGER NOT NULL,
-    Theme_Reunion VARCHAR(30) NOT NULL,
-    Id_Projet INTEGER NOT NULL
+    Id_Reunion INTEGER CONSTRAINT NN_IdReu NOT NULL,
+    Theme_Reunion VARCHAR(30) CONSTRAINT NN_ThemeReu NOT NULL,
+    Id_Projet INTEGER CONSTRAINT NN_IdPrjReu NOT NULL
 );
 
 CREATE TABLE Projet(
     Id_Projet INTEGER,
-    Libelle_Projet VARCHAR(20) UNIQUE NOT NULL,
+    Libelle_Projet VARCHAR(20) CONSTRAINT NN_Libelle NOT NULL,
     NbIntervenant INTEGER, 
-    CoutPlace NUMBER(9,2)
+    CoutPlace NUMBER(9,2),
+    CONSTRAINT UC_Libelle UNIQUE (Libelle_Projet)
 );
 
 CREATE TABLE Investissement(
-    DateAdhesion DATE NOT NULL,
-    Id_Projet INTEGER NOT NULL,
-    Id_Pro INTEGER NOT NULL
+    DateAdhesion DATE CONSTRAINT NN_DateAdhesion NOT NULL,
+    Id_Projet INTEGER CONSTRAINT NN_IdPrjInvest NOT NULL,
+    Id_Pro INTEGER CONSTRAINT NN_IdProInvest NOT NULL
 );
 
 CREATE TABLE Invitation(
     Participation NUMBER(1) DEFAULT 0,
-    Id_Pro INTEGER NOT NULL,
-    Id_Reunion INTEGER NOT NULL
+    Id_Pro INTEGER CONSTRAINT NN_IdProInvit NOT NULL,
+    Id_Reunion INTEGER CONSTRAINT NN_IdReuInvit NOT NULL
 );
 
 -- ajout de la contrainte clé primaire 
