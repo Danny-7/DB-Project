@@ -31,15 +31,16 @@ nbInter INTEGER:= 0;
 BEGIN
 
 SELECT NbIntervenant INTO nbInter FROM Projet WHERE Id_Projet = P_IdProj; 
-
-IF(P_Nbre >= 0) THEN
+IF nbInter + P_Nbre < 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Le nombre d''intervenants du projet ' || P_IdProj ||' ne doit pas être négatif !! ');
+ELSIF(P_Nbre >= 0) THEN
     TSQL:= 'UPDATE Projet SET NbIntervenant = NbIntervenant + ' || P_Nbre || ' WHERE  Id_Projet =' || P_IdProj;
     EXECUTE IMMEDIATE TSQL;
-ELSIF(P_Nbre < 0 AND NBEQUIPEPROJET(P_IdProj) < nbInter) THEN
-    TSQL:= 'UPDATE Projet SET NbIntervenant = NbIntervenant + ' || P_Nbre || ' WHERE  Id_Projet =' || P_IdProj;
-    EXECUTE IMMEDIATE TSQL;
+ELSIF(P_Nbre < 0 AND NBEQUIPEPROJET(P_IdProj) < nbInter + P_Nbre) THEN
+        TSQL:= 'UPDATE Projet SET NbIntervenant = NbIntervenant + ' || P_Nbre || ' WHERE  Id_Projet =' || P_IdProj;
+        EXECUTE IMMEDIATE TSQL;
 ELSE 
-    DBMS_OUTPUT.PUT_LINE('Le nombre de prospecteur est supérieur au nombre d''intervenants initial');
+    DBMS_OUTPUT.PUT_LINE('Le nombre de prospecteur du projet ' || P_IdProj|| ' est supérieur au nombre d''intervenants voulu');
 END IF;
 
 END MAJINTERVENANTS;
