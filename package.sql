@@ -36,7 +36,7 @@ IF nbInter + P_Nbre < 0 THEN
 ELSIF(P_Nbre >= 0) THEN
     TSQL:= 'UPDATE Projet SET NbIntervenant = NbIntervenant + ' || P_Nbre || ' WHERE  Id_Projet =' || P_IdProj;
     EXECUTE IMMEDIATE TSQL;
-ELSIF(P_Nbre < 0 AND NBEQUIPEPROJET(P_IdProj) < nbInter + P_Nbre) THEN
+ELSIF(P_Nbre < 0 AND NBEQUIPEPROJET(P_IdProj) <= nbInter + P_Nbre) THEN
         TSQL:= 'UPDATE Projet SET NbIntervenant = NbIntervenant + ' || P_Nbre || ' WHERE  Id_Projet =' || P_IdProj;
         EXECUTE IMMEDIATE TSQL;
 ELSE 
